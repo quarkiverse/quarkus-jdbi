@@ -65,12 +65,18 @@ class JdbiQuarkusProcessor {
                 "org.jdbi.v3.sqlobject.statement.internal.SqlQueryHandler",
                 "org.jdbi.v3.sqlobject.statement.internal.SqlScriptsHandler",
                 "org.jdbi.v3.sqlobject.statement.internal.SqlUpdateHandler",
+                "org.jdbi.v3.sqlobject.customizer.internal.BindBeanFactory",
+                "org.jdbi.v3.sqlobject.config.internal.RegisterBeanMapperImpl",
+                "com.github.benmanes.caffeine.cache.PSMS",
+                "com.github.benmanes.caffeine.cache.SSMS",
                 "org.jdbi.v3.postgres.PostgresTypes");
     }
 
     @BuildStep
     ReflectiveClassBuildItem reflectionMethods() {
-        return new ReflectiveClassBuildItem(true, false, "org.jdbi.v3.sqlobject.SqlObject");
+        return new ReflectiveClassBuildItem(true, false,
+                "com.github.benmanes.caffeine.cache.CacheLoader",
+                "org.jdbi.v3.sqlobject.SqlObject");
     }
 
     @BuildStep
@@ -82,7 +88,7 @@ class JdbiQuarkusProcessor {
 
         Consumer<AnnotationInstance> recordClasses = ai -> {
             if (ai.target().kind() == Kind.METHOD) {
-                classes.add(ai.target().asMethod().declaringClass().enclosingClass().toString());
+                classes.add(ai.target().asMethod().declaringClass().name().toString());
             }
         };
 
