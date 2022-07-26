@@ -80,6 +80,19 @@ class JdbiQuarkusProcessor {
     }
 
     @BuildStep
+    void findRowMappersEtc(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
+        DotName useRowMapper = DotName.createSimple("org.jdbi.v3.sqlobject.statement.UseRowMapper");
+        DotName useRowReducer = DotName.createSimple("org.jdbi.v3.sqlobject.statement.UseRowReducer");
+        
+        Consumer<AnnotationInstance> recordClasses = ai -> {
+            reflectionClasses.produce(new ReflectiveClassBuildItem(false, false, ai.value().asClass().name().toString()));
+        };
+
+        index.getIndex().getAnnotations(useRowMapper).forEach(recordClasses);
+        index.getIndex().getAnnotations(useRowReducer).forEach(recordClasses);
+    }
+
+    @BuildStep
     NativeImageProxyDefinitionBuildItem registerProxyForSqlObject(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
         DotName query = DotName.createSimple("org.jdbi.v3.sqlobject.statement.SqlQuery");
         DotName update = DotName.createSimple("org.jdbi.v3.sqlobject.statement.SqlUpdate");
