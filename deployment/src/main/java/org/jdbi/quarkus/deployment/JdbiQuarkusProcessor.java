@@ -18,7 +18,7 @@ import org.jboss.jandex.AnnotationTarget.Kind;
 
 class JdbiQuarkusProcessor {
 
-    private static final String FEATURE = "jdbi-quarkus";
+    private static final String FEATURE = "quarkus-jdbi";
 
     @BuildStep
     FeatureBuildItem feature() {
@@ -59,14 +59,6 @@ class JdbiQuarkusProcessor {
                 "org.jdbi.v3.sqlobject.HandlerDecorators",
                 "org.jdbi.v3.sqlobject.statement.internal.SqlObjectStatementConfiguration",
                 "org.jdbi.v3.sqlobject.SqlObjects",
-                "org.jdbi.v3.sqlobject.customizer.TimestampedConfig",
-                "org.jdbi.v3.sqlobject.statement.internal.SqlBatchHandler",
-                "org.jdbi.v3.sqlobject.statement.internal.SqlCallHandler",
-                "org.jdbi.v3.sqlobject.statement.internal.SqlQueryHandler",
-                "org.jdbi.v3.sqlobject.statement.internal.SqlScriptsHandler",
-                "org.jdbi.v3.sqlobject.statement.internal.SqlUpdateHandler",
-                "org.jdbi.v3.sqlobject.customizer.internal.BindBeanFactory",
-                "org.jdbi.v3.sqlobject.config.internal.RegisterBeanMapperImpl",
                 "com.github.benmanes.caffeine.cache.PSMS",
                 "com.github.benmanes.caffeine.cache.SSMS",
                 "org.jdbi.v3.postgres.PostgresTypes");
@@ -77,38 +69,6 @@ class JdbiQuarkusProcessor {
         return new ReflectiveClassBuildItem(true, false,
                 "com.github.benmanes.caffeine.cache.CacheLoader",
                 "org.jdbi.v3.sqlobject.SqlObject");
-    }
-
-    @BuildStep
-    void findRowMappersEtc(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
-        DotName useRowMapper = DotName.createSimple("org.jdbi.v3.sqlobject.statement.UseRowMapper");
-        DotName useRowReducer = DotName.createSimple("org.jdbi.v3.sqlobject.statement.UseRowReducer");
-        
-        Consumer<AnnotationInstance> recordClasses = ai -> {
-            reflectionClasses.produce(new ReflectiveClassBuildItem(false, false, ai.value().asClass().name().toString()));
-        };
-
-        index.getIndex().getAnnotations(useRowMapper).forEach(recordClasses);
-        index.getIndex().getAnnotations(useRowReducer).forEach(recordClasses);
-    }
-
-    @BuildStep
-    NativeImageProxyDefinitionBuildItem registerProxyForSqlObject(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
-        DotName query = DotName.createSimple("org.jdbi.v3.sqlobject.statement.SqlQuery");
-        DotName update = DotName.createSimple("org.jdbi.v3.sqlobject.statement.SqlUpdate");
-
-        Set<String> classes = new HashSet<>();
-
-        Consumer<AnnotationInstance> recordClasses = ai -> {
-            if (ai.target().kind() == Kind.METHOD) {
-                classes.add(ai.target().asMethod().declaringClass().name().toString());
-            }
-        };
-
-        index.getIndex().getAnnotations(query).forEach(recordClasses);
-        index.getIndex().getAnnotations(update).forEach(recordClasses);
-
-        return new NativeImageProxyDefinitionBuildItem(new ArrayList<>(classes));
     }
 
     @BuildStep
