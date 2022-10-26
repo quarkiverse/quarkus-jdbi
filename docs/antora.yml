@@ -1,0 +1,5 @@
+name: quarkus-jdbi
+title: Quarkus Jdbi
+version: dev
+nav:
+  - modules/ROOT/nav.adoc
