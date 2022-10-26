@@ -1,19 +1,21 @@
 package org.jdbi.quarkus.deployment;
 
-import com.google.common.collect.HashMultimap;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationTarget;
 import org.jboss.jandex.DotName;
+
+import com.google.common.collect.HashMultimap;
 
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationTarget;
 
 class JdbiAnnotationsQuarkusProcessor {
 
@@ -141,9 +143,7 @@ class JdbiAnnotationsQuarkusProcessor {
 
         // Register constructor for classes with a pointer in an annotation
         for (DotName registerAnnotation : registerAnnotations) {
-            index.getIndex().
-                    getAnnotations(registerAnnotation).
-                    forEach(recordClasses);
+            index.getIndex().getAnnotations(registerAnnotation).forEach(recordClasses);
         }
     }
 
@@ -171,9 +171,7 @@ class JdbiAnnotationsQuarkusProcessor {
         };
 
         for (DotName proxyTrigger : proxyTriggers) {
-            index.getIndex().
-                    getAnnotations(proxyTrigger).
-                    forEach(recordClasses);
+            index.getIndex().getAnnotations(proxyTrigger).forEach(recordClasses);
         }
 
         return new NativeImageProxyDefinitionBuildItem(new ArrayList<>(classes));

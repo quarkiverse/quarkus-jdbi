@@ -7,14 +7,7 @@ import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.IndexDependencyBuildItem;
-import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationTarget.Kind;
 
 class JdbiQuarkusProcessor {
 
@@ -72,7 +65,8 @@ class JdbiQuarkusProcessor {
     }
 
     @BuildStep
-    void registerForReflectionAllJdbiConfigImplementations(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
+    void registerForReflectionAllJdbiConfigImplementations(CombinedIndexBuildItem index,
+            BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
 
         DotName jdbiConfig = DotName.createSimple("org.jdbi.v3.core.config.JdbiConfig");
 

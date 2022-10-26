@@ -11,7 +11,7 @@ import io.quarkus.test.QuarkusDevModeTest;
 class JdbiQuarkusDevModeTest {
     @RegisterExtension
     static final QuarkusDevModeTest devModeTest = new QuarkusDevModeTest() // Start hot reload (DevMode) test with your extension loaded
-        .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
+            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     @Test
     public void test() {

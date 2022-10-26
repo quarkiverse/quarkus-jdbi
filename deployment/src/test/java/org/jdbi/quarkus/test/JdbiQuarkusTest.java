@@ -12,7 +12,7 @@ class JdbiQuarkusTest {
 
     @RegisterExtension
     static final QuarkusUnitTest unitTest = new QuarkusUnitTest() // Start unit test with your extension loaded
-        .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
+            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     @Test
     public void test() {
