@@ -24,6 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.version>2.13.3.Final</quarkus.version>
+        <jdbi3.version>3.34.0</jdbi3.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -33,6 +34,11 @@
                 <version>${quarkus.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jdbi</groupId>
+                <artifactId>jdbi3-core</artifactId>
+                <version>${jdbi3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
