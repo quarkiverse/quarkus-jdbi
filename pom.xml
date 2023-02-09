@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.version>2.15.1.Final</quarkus.version>
-        <jdbi3.version>3.36.0</jdbi3.version>
+        <jdbi3.version>3.37.1</jdbi3.version>
     </properties>
     <dependencyManagement>
         <dependencies>
