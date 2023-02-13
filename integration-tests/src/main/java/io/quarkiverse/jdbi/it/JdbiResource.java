@@ -16,7 +16,6 @@
  */
 package io.quarkiverse.jdbi.it;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -35,5 +34,5 @@ public class JdbiResource {
         ResultsAsMultimap.main();
 
         return "OK";
-    }    
+    }
 }
