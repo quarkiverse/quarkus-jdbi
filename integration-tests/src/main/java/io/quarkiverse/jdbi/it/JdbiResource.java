@@ -13,12 +13,16 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/
+ */
 package io.quarkiverse.jdbi.it;
+
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+
+import org.jdbi.v3.examples.CustomSqlArrayType;
+import org.jdbi.v3.examples.ResultsAsMultimap;
 
 @Path("/jdbi")
 @ApplicationScoped
@@ -26,7 +30,10 @@ public class JdbiResource {
     // add some rest methods here
 
     @GET
-    public String hello() {
-        return "Hello jdbi";
-    }
+    public String hello() throws Exception {
+        CustomSqlArrayType.main();
+        ResultsAsMultimap.main();
+
+        return "OK";
+    }    
 }
