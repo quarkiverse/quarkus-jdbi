@@ -2,11 +2,13 @@ package org.jdbi.quarkus.deployment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.AnnotationTarget;
+import org.jboss.jandex.ClassInfo;
 import org.jboss.jandex.DotName;
 
 import com.google.common.collect.HashMultimap;
@@ -161,8 +163,11 @@ class JdbiAnnotationsQuarkusProcessor {
     }
 
     @BuildStep
-    NativeImageProxyDefinitionBuildItem registerProxyForSqlObject(CombinedIndexBuildItem index) {
+    void registerProxyForSqlObject(CombinedIndexBuildItem index,
+            BuildProducer<ReflectiveClassBuildItem> reflectionClasses,
+            BuildProducer<NativeImageProxyDefinitionBuildItem> proxyClasses) {
         Set<String> classes = new HashSet<>();
+        Set<String> annotations = new HashSet<>();
 
         Consumer<AnnotationInstance> recordClasses = ai -> {
             if (ai.target().kind() == AnnotationTarget.Kind.METHOD) {
@@ -172,8 +177,37 @@ class JdbiAnnotationsQuarkusProcessor {
 
         for (DotName proxyTrigger : proxyTriggers) {
             index.getIndex().getAnnotations(proxyTrigger).forEach(recordClasses);
+            recordInterface(annotations, index, proxyTrigger);
         }
 
-        return new NativeImageProxyDefinitionBuildItem(new ArrayList<>(classes));
+        index.getIndex().getAllKnownImplementors("org.jdbi.v3.sqlobject.SqlObject").forEach((cls) -> {
+            classes.add(cls.name().toString());
+        });
+
+        String cls[] = new ArrayList<>(classes).toArray(new String[classes.size()]);
+        String ann[] = new ArrayList<>(annotations).toArray(new String[annotations.size()]);
+
+        // Method of the interface must be visible
+        reflectionClasses.produce(new ReflectiveClassBuildItem(false, true, false, cls));
+        reflectionClasses.produce(new ReflectiveClassBuildItem(false, true, false, ann));
+        // Interface should be available for dynamic proxy creation
+        proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(cls));
+    }
+
+    private void recordInterface(Set<String> annotations, CombinedIndexBuildItem index, DotName iface) {
+        annotations.add(iface.toString());
+
+        ClassInfo cls = index.getIndex().getClassByName(iface);
+
+        if (cls == null) {
+            return;
+        }
+
+        cls.asClass().interfaceNames();
+        List<DotName> ifs = cls.asClass().interfaceNames();
+        if (ifs == null) {
+            return;
+        }
+        ifs.forEach(dt -> recordInterface(annotations, index, dt));
     }
 }

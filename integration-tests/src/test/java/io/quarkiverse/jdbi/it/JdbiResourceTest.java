@@ -16,6 +16,6 @@ public class JdbiResourceTest {
                 .when().get("/jdbi")
                 .then()
                 .statusCode(200)
-                .body(is("Hello jdbi"));
+                .body(is("OK"));
     }
 }
