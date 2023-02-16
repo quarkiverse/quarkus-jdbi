@@ -2,6 +2,9 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+[![Build](https://github.com/quarkiverse/quarkus-jdbi/actions/workflows/build.yml/badge.svg)](https://github.com/quarkiverse/quarkus-jdbi/actions/workflows/build.yml)
+
+
 Jdbi provides convenient, idiomatic access to relational data in Java
 
 # Authors
