@@ -2,7 +2,8 @@
 
 include::./includes/attributes.adoc[]
 
-TIP: Describe what the extension does here.
+Jdbi provides convenient, idiomatic access to relational data in Java
+It is using reflection quite a bit, so you need this extension will allow native image processing.
 
 == Installation
 
@@ -21,7 +22,5 @@ For instance, with Maven, add the following dependency to your POM file:
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference
-
-TIP: Remove this section if you don't have Quarkus configuration properties in your extension.
 
 include::includes/quarkus-jdbi.adoc[leveloffset=+1, opts=optional]
