@@ -16,9 +16,9 @@ package org.jdbi.v3.examples.support;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jdbi.v3.core.Jdbi;
 
