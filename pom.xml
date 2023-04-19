@@ -9,7 +9,7 @@
   </parent>
   <groupId>io.quarkiverse.jdbi</groupId>
   <artifactId>quarkus-jdbi-parent</artifactId>
-  <version>999-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>Quarkus Jdbi - Parent</name>
   <modules>
@@ -95,4 +95,8 @@
       </modules>
     </profile>
   </profiles>
+
+  <scm>
+    <tag>1.0.0</tag>
+  </scm>
 </project>
