@@ -17,7 +17,7 @@
     <module>docs</module>
   </modules>
   <scm>
-    <connection>:git:git@github.com:quarkiverse/quarkus-jdbi.git</connection>
+    <connection>scm:git:git@github.com:quarkiverse/quarkus-jdbi.git</connection>
     <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-jdbi.git</developerConnection>
     <url>https://github.com/quarkiverse/quarkus-jdbi</url>
   </scm>
