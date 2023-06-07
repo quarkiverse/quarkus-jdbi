@@ -20,6 +20,7 @@ Jdbi provides convenient, idiomatic access to relational data in Java
 </dependency>
 ```
 
+This quarkus extension makes it possible to use JDBI in native executables.
 
 # Authors
 
