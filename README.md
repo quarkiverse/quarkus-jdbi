@@ -10,6 +10,9 @@
 
 
 Jdbi provides convenient, idiomatic access to relational data in Java
+This quarkus extension makes it possible to use JDBI in native executables.
+
+# Example usage
 
  Add the following dependency in your pom.xml to get started,
 
@@ -20,7 +23,39 @@ Jdbi provides convenient, idiomatic access to relational data in Java
 </dependency>
 ```
 
-This quarkus extension makes it possible to use JDBI in native executables.
+You need to inject AgroalDatasource:
+
+```java
+public class JdbiProvider {
+    @Inject
+    AgroalDataSource ds;
+
+    @Singleton
+    @Produces
+    public Jdbi jdbi() {
+        Jdbi jdbi = Jdbi.create(ds);
+        jdbi.installPlugin(new SqlObjectPlugin());
+        return jdbi;
+    }
+}
+```
+
+and you can use it everywhere:
+
+```java
+public class UserDAO {
+    @Inject
+    Jdbi jdbi;
+
+    public Optional<User> findUserById(long id) {
+        return jdbi.inTransaction(transactionHandle ->
+                transactionHandle.createQuery("SELECT * FROM users WHERE id=:id")
+                        .bind("id", id)
+                        .mapTo(User.class)
+                        .findFirst());
+    }
+}
+```
 
 # Authors
 
