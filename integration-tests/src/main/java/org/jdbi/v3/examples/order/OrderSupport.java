@@ -39,7 +39,8 @@ public final class OrderSupport {
 
     public static void createTables(Jdbi jdbi) {
         jdbi.withHandle(
-                handle -> handle.execute("CREATE TABLE IF NOT EXISTS orders (id INT, user_id INT, comment VARCHAR, address VARCHAR)"));
+                handle -> handle
+                        .execute("CREATE TABLE IF NOT EXISTS orders (id INT, user_id INT, comment VARCHAR, address VARCHAR)"));
     }
 
     public static void populateOrders(Jdbi jdbi, int orderCount, int userIdCount) {

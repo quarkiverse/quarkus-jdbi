@@ -20,8 +20,6 @@ import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
-import org.jboss.jandex.Type;
-import org.jdbi.v3.sqlobject.config.RegisterConstructorMappers;
 
 class JdbiAnnotationsQuarkusProcessor {
 
