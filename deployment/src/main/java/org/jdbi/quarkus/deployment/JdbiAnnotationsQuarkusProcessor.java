@@ -1,6 +1,7 @@
 package org.jdbi.quarkus.deployment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.function.Consumer;
 
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.AnnotationTarget;
+import org.jboss.jandex.AnnotationValue;
 import org.jboss.jandex.ClassInfo;
 import org.jboss.jandex.DotName;
 
@@ -18,6 +20,8 @@ import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
+import org.jboss.jandex.Type;
+import org.jdbi.v3.sqlobject.config.RegisterConstructorMappers;
 
 class JdbiAnnotationsQuarkusProcessor {
 
@@ -140,12 +144,19 @@ class JdbiAnnotationsQuarkusProcessor {
     void findRegistrations(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
 
         Consumer<AnnotationInstance> recordClasses = ai -> {
-            reflectionClasses.produce(new ReflectiveClassBuildItem(false, false, ai.value().asClass().name().toString()));
+            reflectionClasses.produce(ReflectiveClassBuildItem.builder(ai.value().asClass().name().toString()).build());
         };
 
         // Register constructor for classes with a pointer in an annotation
         for (DotName registerAnnotation : registerAnnotations) {
-            index.getIndex().getAnnotations(registerAnnotation).forEach(recordClasses);
+            index.getIndex().getAnnotations(registerAnnotation).forEach(ai -> {
+                if (ai.value().kind() == AnnotationValue.Kind.ARRAY) {
+                    Arrays.stream(ai.value().asNestedArray())
+                            .forEach(recordClasses);
+                } else {
+                    recordClasses.accept(ai);
+                }
+            });
         }
     }
 
@@ -156,7 +167,7 @@ class JdbiAnnotationsQuarkusProcessor {
             if (index.getIndex().getAnnotations(annotation).isEmpty() == false) {
                 Set<String> handlers = annotationToHandlers.get(annotation);
                 for (String handler : handlers) {
-                    reflectionClasses.produce(new ReflectiveClassBuildItem(false, false, handler));
+                    reflectionClasses.produce(ReflectiveClassBuildItem.builder(handler).build());
                 }
             }
         }
@@ -188,8 +199,8 @@ class JdbiAnnotationsQuarkusProcessor {
         String ann[] = new ArrayList<>(annotations).toArray(new String[annotations.size()]);
 
         // Method of the interface must be visible
-        reflectionClasses.produce(new ReflectiveClassBuildItem(false, true, false, cls));
-        reflectionClasses.produce(new ReflectiveClassBuildItem(false, true, false, ann));
+        reflectionClasses.produce(ReflectiveClassBuildItem.builder(cls).build());
+        reflectionClasses.produce(ReflectiveClassBuildItem.builder(ann).build());
         // Interface should be available for dynamic proxy creation
         proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(cls));
     }
