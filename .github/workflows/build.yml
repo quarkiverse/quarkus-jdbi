@@ -24,12 +24,13 @@ on:
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
+    name: Build on ${{ matrix.os }} and JDK ${{matrix.jdk}}
     strategy:
       fail-fast: false
       matrix:
 #        os: [windows-latest, macos-latest, ubuntu-latest]
         os: [ubuntu-latest]
+        jdk: [17, 21]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Prepare git
@@ -41,7 +42,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: temurin
-          java-version: 17
+          java-version: ${{matrix.jdk}}
           cache: 'maven'
 
       - name: Build with Maven
