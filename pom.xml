@@ -11,6 +11,7 @@
   <version>999-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Quarkus Jdbi - Parent</name>
+  <description>Jdbi provides convenient, idiomatic access to relational data in Java. This extension makes it possible to use JDBI in native executables.</description>
   <modules>
     <module>deployment</module>
     <module>runtime</module>
