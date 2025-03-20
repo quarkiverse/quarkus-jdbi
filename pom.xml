@@ -8,7 +8,7 @@
   </parent>
   <groupId>io.quarkiverse.jdbi</groupId>
   <artifactId>quarkus-jdbi-parent</artifactId>
-  <version>999-SNAPSHOT</version>
+  <version>1.7.0</version>
   <packaging>pom</packaging>
   <name>Quarkus Jdbi - Parent</name>
   <description>Jdbi provides convenient, idiomatic access to relational data in Java. This extension makes it possible to use JDBI in native executables.</description>
@@ -20,7 +20,7 @@
     <connection>scm:git:git@github.com:quarkiverse/quarkus-jdbi.git</connection>
     <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-jdbi.git</developerConnection>
     <url>https://github.com/quarkiverse/quarkus-jdbi</url>
-    <tag>HEAD</tag>
+    <tag>1.7.0</tag>
   </scm>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
