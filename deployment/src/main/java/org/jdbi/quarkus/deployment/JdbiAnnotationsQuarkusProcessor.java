@@ -202,7 +202,11 @@ class JdbiAnnotationsQuarkusProcessor {
         reflectionClasses.produce(ReflectiveClassBuildItem.builder(cls).methods(true).build());
         reflectionClasses.produce(ReflectiveClassBuildItem.builder(ann).methods(true).build());
         // Interface should be available for dynamic proxy creation
-        proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(cls));
+        for (String _class : classes) {
+            // NativeImageProxyDefinitionBuildItem is supposed to be able to take multiple classes,
+            // but it doesn't work for some reason (tested on Quarkus 3.21.0)
+            proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(_class));
+        }
     }
 
     private void recordInterface(Set<String> annotations, CombinedIndexBuildItem index, DotName iface) {
