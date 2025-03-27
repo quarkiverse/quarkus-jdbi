@@ -20,7 +20,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 
+import org.jdbi.v3.examples.ArrayAnnotations;
 import org.jdbi.v3.examples.CustomSqlArrayType;
+import org.jdbi.v3.examples.OtherAnnotations;
 import org.jdbi.v3.examples.ResultsAsMultimap;
 
 @Path("/jdbi")
@@ -32,6 +34,8 @@ public class JdbiResource {
     public String hello() throws Exception {
         CustomSqlArrayType.main();
         ResultsAsMultimap.main();
+        ArrayAnnotations.main();
+        OtherAnnotations.main();
 
         return "OK";
     }
