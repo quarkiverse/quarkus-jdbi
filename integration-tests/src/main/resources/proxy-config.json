@@ -1,4 +1,0 @@
-[
-  ["org.jdbi.v3.examples.CustomSqlArrayType$CustomSqlObject"],
-  ["org.jdbi.v3.examples.RegisterConstructorMappers$Dao"]
-]
