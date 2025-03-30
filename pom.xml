@@ -4,17 +4,17 @@
   <parent>
     <groupId>io.quarkiverse</groupId>
     <artifactId>quarkiverse-parent</artifactId>
-    <version>15</version>
+    <version>19</version>
   </parent>
   <groupId>io.quarkiverse.jdbi</groupId>
   <artifactId>quarkus-jdbi-parent</artifactId>
   <version>999-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Quarkus Jdbi - Parent</name>
+  <description>Jdbi provides convenient, idiomatic access to relational data in Java. This extension makes it possible to use JDBI in native executables.</description>
   <modules>
     <module>deployment</module>
     <module>runtime</module>
-    <module>docs</module>
   </modules>
   <scm>
     <connection>scm:git:git@github.com:quarkiverse/quarkus-jdbi.git</connection>
@@ -27,8 +27,8 @@
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>3.6.1</quarkus.version>
-    <jdbi3.version>3.36.0</jdbi3.version>
+    <quarkus.version>3.21.0</quarkus.version>
+    <jdbi3.version>3.42.0</jdbi3.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -87,6 +87,18 @@
     </pluginManagement>
   </build>
   <profiles>
+    <profile>
+      <id>docs</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <modules>
+        <module>docs</module>
+      </modules>
+    </profile>
     <profile>
       <id>it</id>
       <activation>

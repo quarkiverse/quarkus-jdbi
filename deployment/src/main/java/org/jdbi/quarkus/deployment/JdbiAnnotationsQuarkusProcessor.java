@@ -28,33 +28,33 @@ class JdbiAnnotationsQuarkusProcessor {
     private static final Set<DotName> registerAnnotations = new HashSet<>();
 
     static {
-        addConfig("RegisterArgumentFactories", true);
-        addConfig("RegisterArgumentFactory", true);
-        addConfig("RegisterBeanMapper", true);
-        addConfig("RegisterBeanMappers", true);
-        addConfig("RegisterCollectorFactory", true);
-        addConfig("RegisterColumnMapper", true);
-        addConfig("RegisterColumnMapperFactories", true);
-        addConfig("RegisterColumnMapperFactory", true);
-        addConfig("RegisterColumnMappers", true);
-        addConfig("RegisterConstructorMapper", true);
-        addConfig("RegisterConstructorMappers", true);
-        addConfig("RegisterFieldMapper", true);
-        addConfig("RegisterFieldMappers", true);
-        addConfig("RegisterJoinRowMapper", true);
-        addConfig("RegisterObjectArgumentFactories", true);
-        addConfig("RegisterObjectArgumentFactory", true);
-        addConfig("RegisterRowMapper", true);
-        addConfig("RegisterRowMapperFactories", true);
-        addConfig("RegisterRowMapperFactory", true);
-        addConfig("RegisterRowMappers", true);
+        addConfig("RegisterArgumentFactories");
+        addConfig("RegisterArgumentFactory");
+        addConfig("RegisterBeanMapper");
+        addConfig("RegisterBeanMappers");
+        addConfig("RegisterCollectorFactory");
+        addConfig("RegisterColumnMapper");
+        addConfig("RegisterColumnMapperFactories");
+        addConfig("RegisterColumnMapperFactory");
+        addConfig("RegisterColumnMappers");
+        addConfig("RegisterConstructorMapper");
+        addConfig("RegisterConstructorMappers");
+        addConfig("RegisterFieldMapper");
+        addConfig("RegisterFieldMappers");
+        addConfig("RegisterJoinRowMapper");
+        addConfig("RegisterObjectArgumentFactories");
+        addConfig("RegisterObjectArgumentFactory");
+        addConfig("RegisterRowMapper");
+        addConfig("RegisterRowMapperFactories");
+        addConfig("RegisterRowMapperFactory");
+        addConfig("RegisterRowMappers");
 
-        addConfig("UseEnumStrategy", false);
-        addConfig("UseSqlParser", true);
-        addConfig("UseTemplateEngine", true);
+        addConfig("UseEnumStrategy");
+        addConfig("UseSqlParser");
+        addConfig("UseTemplateEngine");
 
-        addConfig("KeyColumn", false);
-        addConfig("ValueColumn", false);
+        addConfig("KeyColumn");
+        addConfig("ValueColumn");
 
         addLocator("UseAnnotationSqlLocator");
         addLocator("UseClasspathSqlLocator");
@@ -99,7 +99,7 @@ class JdbiAnnotationsQuarkusProcessor {
                 "org.jdbi.v3.sqlobject.customizer.TimestampedConfig");
     }
 
-    static void addConfig(String name, boolean register) {
+    static void addConfig(String name) {
         String triggerAnnotation = "org.jdbi.v3.sqlobject.config." + name;
         addHandler(triggerAnnotation, "org.jdbi.v3.sqlobject.config.internal." + name + "Impl");
         addClassReg(triggerAnnotation);
@@ -138,23 +138,26 @@ class JdbiAnnotationsQuarkusProcessor {
         proxyTriggers.add(DotName.createSimple(triggerAnnotation));
     }
 
+    void recordClasses(BuildProducer<ReflectiveClassBuildItem> reflectionClasses, AnnotationInstance ai) {
+        reflectionClasses.produce(ReflectiveClassBuildItem.builder(ai.value().asClass().name().toString()).build());
+    }
+
     @BuildStep
     void findRegistrations(CombinedIndexBuildItem index, BuildProducer<ReflectiveClassBuildItem> reflectionClasses) {
-
-        Consumer<AnnotationInstance> recordClasses = ai -> {
-            reflectionClasses.produce(ReflectiveClassBuildItem.builder(ai.value().asClass().name().toString()).build());
-        };
-
         // Register constructor for classes with a pointer in an annotation
         for (DotName registerAnnotation : registerAnnotations) {
-            index.getIndex().getAnnotations(registerAnnotation).forEach(ai -> {
-                if (ai.value().kind() == AnnotationValue.Kind.ARRAY) {
-                    Arrays.stream(ai.value().asNestedArray())
-                            .forEach(recordClasses);
-                } else {
-                    recordClasses.accept(ai);
+            for (AnnotationInstance ai : index.getIndex().getAnnotations(registerAnnotation)) {
+                if (ai.value().kind() == AnnotationValue.Kind.ARRAY
+                        && ai.value().componentKind() == AnnotationValue.Kind.NESTED) {
+                    for (AnnotationInstance inner : ai.value().asNestedArray()) {
+                        recordClasses(reflectionClasses, inner);
+                    }
+                } else if (ai.value().kind() == AnnotationValue.Kind.NESTED) {
+                    recordClasses(reflectionClasses, ai.value().asNested());
+                } else if (ai.value().kind() == AnnotationValue.Kind.CLASS) {
+                    recordClasses(reflectionClasses, ai);
                 }
-            });
+            }
         }
     }
 
@@ -197,10 +200,15 @@ class JdbiAnnotationsQuarkusProcessor {
         String ann[] = new ArrayList<>(annotations).toArray(new String[annotations.size()]);
 
         // Method of the interface must be visible
-        reflectionClasses.produce(ReflectiveClassBuildItem.builder(cls).build());
-        reflectionClasses.produce(ReflectiveClassBuildItem.builder(ann).build());
-        // Interface should be available for dynamic proxy creation
-        proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(cls));
+        reflectionClasses.produce(ReflectiveClassBuildItem.builder(cls).methods(true).build());
+        reflectionClasses.produce(ReflectiveClassBuildItem.builder(ann).methods(true).build());
+
+      // Interface should be available for dynamic proxy creation
+        for (String _class : classes) {
+            // NativeImageProxyDefinitionBuildItem is supposed to be able to take multiple classes,
+            // but it doesn't work for some reason (tested on Quarkus 3.21.0)
+            proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(_class));
+        }
     }
 
     private void recordInterface(Set<String> annotations, CombinedIndexBuildItem index, DotName iface) {
