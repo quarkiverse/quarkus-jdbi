@@ -56,11 +56,6 @@
       </dependency>
       <dependency>
         <groupId>org.jdbi</groupId>
-        <artifactId>jdbi3-oracle</artifactId>
-        <version>${jdbi3.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jdbi</groupId>
         <artifactId>jdbi3-oracle12</artifactId>
         <version>${jdbi3.version}</version>
       </dependency>
