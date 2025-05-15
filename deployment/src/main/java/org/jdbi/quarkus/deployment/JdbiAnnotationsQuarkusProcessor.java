@@ -1,6 +1,7 @@
 package org.jdbi.quarkus.deployment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -201,7 +202,8 @@ class JdbiAnnotationsQuarkusProcessor {
         // Method of the interface must be visible
         reflectionClasses.produce(ReflectiveClassBuildItem.builder(cls).methods(true).build());
         reflectionClasses.produce(ReflectiveClassBuildItem.builder(ann).methods(true).build());
-        // Interface should be available for dynamic proxy creation
+
+      // Interface should be available for dynamic proxy creation
         for (String _class : classes) {
             // NativeImageProxyDefinitionBuildItem is supposed to be able to take multiple classes,
             // but it doesn't work for some reason (tested on Quarkus 3.21.0)
