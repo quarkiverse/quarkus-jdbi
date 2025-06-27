@@ -49,6 +49,7 @@ public final class OrderSupport {
         jdbi.withHandle(
                 handle -> {
                     handle.createUpdate("TRUNCATE orders").execute();
+
                     for (int j = 0; j < userIdCount; j++) {
                         int userId = RANDOM.nextInt(10_000);
                         for (int i = 0; i < orderCount; i++) {
