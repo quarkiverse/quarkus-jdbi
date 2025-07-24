@@ -12,6 +12,20 @@
 Jdbi provides convenient, idiomatic access to relational data in Java
 This quarkus extension makes it possible to use JDBI in native executables.
 
+# Versioning
+
+The repo follows semver for versioning of its own API.
+This means the following:
+
+* Major version is raised only in case of breaking changes to your _quarkus-jdbi_ usage.
+  (When you need to adjust your code).
+
+* Minor version is raised only in case of functional changes to _quarkus-jdbi_.
+  eg. new annotations supported etc...
+
+* Patch version is raised in case of bugfixes OR dependency changes (regardless whether they are breaking or not).
+  eg. quarkus and jdbi version changes will be signalled as patch releases.
+
 # Example usage
 
  Add the following dependency in your pom.xml to get started,
