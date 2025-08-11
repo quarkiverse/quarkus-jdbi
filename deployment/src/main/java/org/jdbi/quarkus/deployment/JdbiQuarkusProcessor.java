@@ -3,8 +3,6 @@ package org.jdbi.quarkus.deployment;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.jboss.jandex.DotName;
-
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.AdditionalApplicationArchiveMarkerBuildItem;
