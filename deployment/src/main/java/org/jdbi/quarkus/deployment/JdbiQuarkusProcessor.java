@@ -57,6 +57,8 @@ class JdbiQuarkusProcessor {
                 "org.jdbi.v3.core.extension.Extensions",
                 "org.jdbi.v3.core.internal.OnDemandExtensions",
                 "org.jdbi.v3.core.internal.EnumStrategies",
+                "org.jdbi.v3.sqlobject.transaction.internal.TransactionDecorator",
+                "org.jdbi.v3.core.config.internal.ConfigCaches",
                 "org.jdbi.v3.core.enums.Enums",
                 "org.jdbi.v3.core.Handles",
                 "org.jdbi.v3.sqlobject.Handlers",
