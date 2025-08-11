@@ -47,8 +47,10 @@ class JdbiQuarkusProcessor {
                 "org.jdbi.v3.core.mapper.MapMappers",
                 "org.jdbi.v3.core.mapper.MapEntryMappers",
                 "org.jdbi.v3.core.mapper.reflect.ReflectionMappers",
+                "org.jdbi.v3.core.mapper.immutables.JdbiImmutables",
                 "org.jdbi.v3.core.mapper.reflect.internal.PojoTypes",
-                "org.jdbi.v3.core.collector.JdbiCollectors",
+                "org.jdbi.v3.core.collector.JdbiCollectors",                            
+                "org.jdbi.v3.core.mapper.freebuilder.JdbiFreeBuilders",
                 "org.jdbi.v3.core.qualifier.Qualifiers",
                 "org.jdbi.v3.core.result.ResultProducers",
                 "org.jdbi.v3.core.array.SqlArrayTypes",
@@ -60,9 +62,9 @@ class JdbiQuarkusProcessor {
                 "org.jdbi.v3.sqlobject.Handlers",
                 "org.jdbi.v3.sqlobject.HandlerDecorators",
                 "org.jdbi.v3.sqlobject.statement.internal.SqlObjectStatementConfiguration",
+                "org.jdbi.v3.sqlobject.customizer.TimestampedConfig",
                 "org.jdbi.v3.sqlobject.SqlObjects",
                 "com.github.benmanes.caffeine.cache.PSMS",
-                "com.github.benmanes.caffeine.cache.SSMS",
                 "org.jdbi.v3.postgres.PostgresTypes");
     }
 
@@ -70,6 +72,7 @@ class JdbiQuarkusProcessor {
     ReflectiveClassBuildItem reflectionMethods() {
         return new ReflectiveClassBuildItem(true, false,
                 "com.github.benmanes.caffeine.cache.CacheLoader",
+                "com.github.benmanes.caffeine.cache.SSMS",
                 "org.jdbi.v3.sqlobject.SqlObject");
     }
 
