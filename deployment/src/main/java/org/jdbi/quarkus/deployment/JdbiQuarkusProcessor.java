@@ -68,10 +68,10 @@ class JdbiQuarkusProcessor {
                 "org.jdbi.v3.sqlobject.SqlObjects",
                 "com.github.benmanes.caffeine.cache.PSMS",
                 "org.jdbi.v3.postgres.PostgresTypes")
-            .constructors(true)
-            .methods(false)
-            .fields(false)
-            .build();
+                .constructors(true)
+                .methods(false)
+                .fields(false)
+                .build();
     }
 
     @BuildStep
@@ -80,10 +80,10 @@ class JdbiQuarkusProcessor {
                 "com.github.benmanes.caffeine.cache.CacheLoader",
                 "com.github.benmanes.caffeine.cache.SSMS",
                 "org.jdbi.v3.sqlobject.SqlObject")
-            .constructors(false)
-            .methods(true)
-            .fields(false)
-            .build();
+                .constructors(false)
+                .methods(true)
+                .fields(false)
+                .build();
     }
 
     @BuildStep
@@ -94,12 +94,11 @@ class JdbiQuarkusProcessor {
         index.getIndex().getAllKnownImplementations("org.jdbi.v3.core.config.JdbiConfig")
                 .forEach(info -> {
                     reflectionClasses.produce(
-                        ReflectiveClassBuildItem.builder(info.name().toString())
-                            .constructors(true)
-                            .methods(true)
-                            .fields(false)
-                            .build()
-                    );
+                            ReflectiveClassBuildItem.builder(info.name().toString())
+                                    .constructors(true)
+                                    .methods(true)
+                                    .fields(false)
+                                    .build());
                 });
     }
 
@@ -114,12 +113,11 @@ class JdbiQuarkusProcessor {
                     String pluginName = info.name().toString();
                     plugins.add(pluginName);
                     reflectionClasses.produce(
-                        ReflectiveClassBuildItem.builder(pluginName)
-                            .constructors(true)
-                            .methods(true)
-                            .fields(false)
-                            .build()
-                    );
+                            ReflectiveClassBuildItem.builder(pluginName)
+                                    .constructors(true)
+                                    .methods(true)
+                                    .fields(false)
+                                    .build());
                 });
 
         serviceProviders.produce(new ServiceProviderBuildItem(PLUGIN, plugins));
