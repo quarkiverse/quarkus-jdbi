@@ -16,15 +16,12 @@ import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.examples.order.Order;
 import org.jdbi.v3.examples.order.OrderBean;
 import org.jdbi.v3.examples.order.OrderFields;
-import org.jdbi.v3.postgres.JavaTimeMapperFactory;
 import org.jdbi.v3.sqlobject.SingleValue;
 import org.jdbi.v3.sqlobject.config.RegisterArgumentFactories;
 import org.jdbi.v3.sqlobject.config.RegisterArgumentFactory;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMappers;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
-import org.jdbi.v3.sqlobject.config.RegisterColumnMapperFactories;
-import org.jdbi.v3.sqlobject.config.RegisterColumnMapperFactory;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMappers;
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper;
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMappers;
@@ -82,7 +79,6 @@ public final class ArrayAnnotations {
         Integer getOrderId();
 
         @SqlQuery("SELECT TIMESTAMP '2004-10-19 10:23:54'")
-        @RegisterColumnMapperFactories(@RegisterColumnMapperFactory(JavaTimeMapperFactory.class))
         LocalDateTime getOrderIdAsTime();
 
         @SqlQuery("SELECT :string")
