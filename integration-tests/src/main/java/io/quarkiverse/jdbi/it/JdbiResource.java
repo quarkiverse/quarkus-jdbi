@@ -22,6 +22,7 @@ import jakarta.ws.rs.Path;
 
 import org.jdbi.v3.examples.ArrayAnnotations;
 import org.jdbi.v3.examples.CustomSqlArrayType;
+import org.jdbi.v3.examples.JavaTimeExample;
 import org.jdbi.v3.examples.OtherAnnotations;
 import org.jdbi.v3.examples.ResultsAsMultimap;
 
@@ -36,6 +37,7 @@ public class JdbiResource {
         ResultsAsMultimap.main();
         ArrayAnnotations.main();
         OtherAnnotations.main();
+        JavaTimeExample.main();
 
         return "OK";
     }

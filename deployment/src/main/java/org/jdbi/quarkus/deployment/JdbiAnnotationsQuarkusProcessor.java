@@ -207,6 +207,10 @@ class JdbiAnnotationsQuarkusProcessor {
             // but it doesn't work for some reason (tested on Quarkus 3.21.0)
             proxyClasses.produce(new NativeImageProxyDefinitionBuildItem(_class));
         }
+
+        // Register proxy for @Legacy annotation used by LegacyArgumentFactory (JDBI 3.52+)
+        // This is required for java.time type support in native images
+        //proxyClasses.produce(new NativeImageProxyDefinitionBuildItem("org.jdbi.v3.meta.Legacy"));
     }
 
     private void recordInterface(Set<String> annotations, CombinedIndexBuildItem index, DotName iface) {
