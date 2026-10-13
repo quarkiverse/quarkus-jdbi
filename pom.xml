@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.quarkiverse</groupId>
     <artifactId>quarkiverse-parent</artifactId>
-    <version>22</version>
+    <version>26</version>
   </parent>
   <groupId>io.quarkiverse.jdbi</groupId>
   <artifactId>quarkus-jdbi-parent</artifactId>
@@ -28,7 +28,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jdbi3.version>3.55.0</jdbi3.version>
-    <quarkus.version>3.39.4</quarkus.version>
+    <quarkus.version>3.40.1</quarkus.version>
   </properties>
   <dependencyManagement>
     <dependencies>
